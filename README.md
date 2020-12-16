@@ -1,0 +1,1 @@
+Spring Securit Stand Alone Library
