@@ -1,1 +1,1 @@
-# Spring Securit Stand Alone Library
+# Spring Security Stand Alone Library
