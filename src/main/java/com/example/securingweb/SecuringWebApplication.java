@@ -26,8 +26,8 @@ public class SecuringWebApplication {
 
 	@PostConstruct
 	public void init() {
-		roleService.createRole("USER");
-		roleService.createRole("ADMIN");
+		roleService.createRole("ROLE_USER");
+		roleService.createRole("ROLE_ADMIN");
 
 		for (Role role : roleService.getRoles()) {
 			System.out.println(role);

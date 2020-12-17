@@ -27,7 +27,6 @@ public class JavaWebTokenService {
 	public Cookie generateToken(String username) {
 		String tokenValue = Jwts.
 				builder().
-				setIssuedAt(new Date()).
 				setSubject(username).
 				setExpiration(Date.from(LocalDate.now().plusDays(DURATION).atStartOfDay(ZoneId.systemDefault()).toInstant())).
 				signWith(SignatureAlgorithm.HS512, jwtSecret).
@@ -47,18 +46,18 @@ public class JavaWebTokenService {
 		}
 
 		Claims body = claimsJws.getBody();
+		Date now = new Date();
 		Date expiration = body.getExpiration();
-		Date issuedAt = body.getIssuedAt();
-		long diff = TimeUnit.DAYS.convert(Math.abs(expiration.getTime() - issuedAt.getTime()), TimeUnit.MILLISECONDS);
-		log.info("issued at: " + issuedAt);
-		log.info("expiration: " + issuedAt);
-		log.info("diff: " + diff);
 
-
-		if (diff > DURATION) {
+		long timeDiff = now.getTime() - expiration.getTime();
+		if (timeDiff > 0) {
 			throw new RuntimeException("token has expired, re-login");
+		} else {
+			log.info("now: " + now);
+			log.info("expiration: " + expiration);
+			log.info("diff: " + TimeUnit.DAYS.convert(Math.abs(timeDiff), TimeUnit.MILLISECONDS));
+			return body.getSubject();
 		}
-		return body.getSubject();
 	}
 
 }

@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RestController
-public class UserAuthenticationController {
+public class AuthenticationController {
 
 	@Autowired
 	private UserService userService;
