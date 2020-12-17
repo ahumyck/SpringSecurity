@@ -9,6 +9,6 @@ import java.util.Date;
 @AllArgsConstructor
 @Getter
 @ToString
-public class Cookie {
+public class JavaWebToken {
 	private final String value;
 }

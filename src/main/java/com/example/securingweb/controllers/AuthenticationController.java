@@ -31,6 +31,15 @@ public class AuthenticationController {
 		return "Username " + body.getUsername() + " was signed-up";
 	}
 
+	@PostMapping(value = "/sign-up-admin")
+	public String singUpAdmin(HttpServletResponse response, @RequestBody UsernamePasswordRequestBody body) throws IOException {
+		User user = userService.createAdmin(body);
+		if (user == null) {
+			response.sendError(400, "Cannot create user");
+		}
+		return "Admin " + body.getUsername() + " was signed-up";
+	}
+
 	@PostMapping(value = "/sign-in")
 	public AuthorizationResponseBody singIn(HttpServletResponse response, @RequestBody UsernamePasswordRequestBody body) throws IOException {
 		User user = userService.findByUsername(body.getUsername());

@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import static com.example.securingweb.SecuringWebApplication.ADMIN_ROLE_NAME;
+import static com.example.securingweb.SecuringWebApplication.USER_ROLE_NAME;
+
 @Service("userService")
 public class UserService {
 
@@ -28,13 +31,21 @@ public class UserService {
 	}
 
 	public User saveUser(User user) {
-		Role role = roleRepository.findByRoleName("USER");
+		Role role = roleRepository.findByRoleName(USER_ROLE_NAME);
 		user.setRole(role);
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		return userRepository.save(user);
 	}
 
+	public User createAdmin(UsernamePasswordRequestBody body){
+		return createUser(body, ADMIN_ROLE_NAME);
+	}
+
 	public User createUser(UsernamePasswordRequestBody body) {
+		return createUser(body, USER_ROLE_NAME);
+	}
+
+	public User createUser(UsernamePasswordRequestBody body, String role) {
 		String username = body.getUsername();
 		String password = body.getPassword();
 
@@ -42,12 +53,14 @@ public class UserService {
 			User user = new User();
 			user.setUsername(username);
 			user.setPassword(passwordEncoder.encode(password));
-			user.setRole(roleRepository.findByRoleName("USER"));
+			user.setRole(roleRepository.findByRoleName(role));
 			return userRepository.save(user);
 		}
 
 		return null;
 	}
+
+
 
 	public User findByUsername(String username) {
 		return userRepository.findByUsername(username);

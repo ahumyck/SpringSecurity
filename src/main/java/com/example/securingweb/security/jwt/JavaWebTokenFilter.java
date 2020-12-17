@@ -23,38 +23,35 @@ import java.util.Optional;
 @Slf4j
 public class JavaWebTokenFilter extends GenericFilterBean {
 
-	@Autowired
-	private JavaWebTokenService javaWebTokenService;
+    @Autowired
+    private JavaWebTokenService javaWebTokenService;
 
-	@Autowired
-	private CustomUserDetailService customUserDetailService;
+    @Autowired
+    private CustomUserDetailService customUserDetailService;
 
-	public static final String AUTHORIZATION = "Authorization";
+    public static final String AUTHORIZATION = "Authorization";
 
-	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		Optional<Cookie> optionalCookie = getCookieFromRequest((HttpServletRequest) request);
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        Optional<String> token = getCookieFromRequest((HttpServletRequest) request);
 
-		optionalCookie.ifPresent(cookie -> {
-			log.info("My cookie = " + cookie);
-			String username = javaWebTokenService.validateTokenAndGetUsername(cookie);
-			log.info("Username = " + username);
-			UserDetails userDetails = customUserDetailService.loadUserByUsername(username);
-			log.info("User authorities: " + userDetails.getAuthorities());
-			UsernamePasswordAuthenticationToken userAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-			SecurityContextHolder.getContext().setAuthentication(userAuthenticationToken);
+        token.ifPresent(javaWebToken -> {
+            String username = javaWebTokenService.validateTokenAndGetUsername(javaWebToken);
+            UserDetails userDetails = customUserDetailService.loadUserByUsername(username);
+            UsernamePasswordAuthenticationToken userAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(userAuthenticationToken);
 
-		});
+        });
 
-		chain.doFilter(request, response);
-	}
+        chain.doFilter(request, response);
+    }
 
-	private Optional<Cookie> getCookieFromRequest(HttpServletRequest request) {
-		String bearer = request.getHeader(AUTHORIZATION);
-		if (StringUtils.hasText(bearer) && bearer.startsWith("Bearer ")) {
-			return Optional.of(new Cookie(bearer.substring(7)));
-		}
-		return Optional.empty();
-	}
+    private Optional<String> getCookieFromRequest(HttpServletRequest request) {
+        String bearer = request.getHeader(AUTHORIZATION);
+        if (StringUtils.hasText(bearer) && bearer.startsWith("Bearer ")) {
+            return Optional.of(bearer.substring(7));
+        }
+        return Optional.empty();
+    }
 
 }

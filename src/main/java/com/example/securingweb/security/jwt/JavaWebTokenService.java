@@ -24,23 +24,23 @@ public class JavaWebTokenService {
 
 	private final static long DURATION = 15; //days
 
-	public Cookie generateToken(String username) {
+	public JavaWebToken generateToken(String username) {
 		String tokenValue = Jwts.
 				builder().
 				setSubject(username).
 				setExpiration(Date.from(LocalDate.now().plusDays(DURATION).atStartOfDay(ZoneId.systemDefault()).toInstant())).
 				signWith(SignatureAlgorithm.HS512, jwtSecret).
 				compact();
-		return new Cookie(tokenValue);
+		return new JavaWebToken(tokenValue);
 	}
 
-	public String validateTokenAndGetUsername(Cookie cookie) {
+	public String validateTokenAndGetUsername(String javaWebToken) {
 		Jws<Claims> claimsJws;
 		try {
-			claimsJws = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(cookie.getValue());
+			claimsJws = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(javaWebToken);
 		}
 		catch (Exception e) {
-			log.error("Error while validating token = " + cookie.getValue());
+			log.error("Error while validating token = " + javaWebToken);
 			log.error(e.getMessage());
 			throw new RuntimeException(e);
 		}
@@ -53,9 +53,6 @@ public class JavaWebTokenService {
 		if (timeDiff > 0) {
 			throw new RuntimeException("token has expired, re-login");
 		} else {
-			log.info("now: " + now);
-			log.info("expiration: " + expiration);
-			log.info("diff: " + TimeUnit.DAYS.convert(Math.abs(timeDiff), TimeUnit.MILLISECONDS));
 			return body.getSubject();
 		}
 	}

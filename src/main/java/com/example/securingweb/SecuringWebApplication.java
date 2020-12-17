@@ -19,6 +19,9 @@ public class SecuringWebApplication {
 	@Autowired
 	private RoleService roleService;
 
+	public static final String USER_ROLE_NAME = "USER";
+	public static final String ADMIN_ROLE_NAME = "ADMIN";
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(SecuringWebApplication.class, args);
@@ -26,8 +29,8 @@ public class SecuringWebApplication {
 
 	@PostConstruct
 	public void init() {
-		roleService.createRole("ROLE_USER");
-		roleService.createRole("ROLE_ADMIN");
+		roleService.createRole(USER_ROLE_NAME);
+		roleService.createRole(ADMIN_ROLE_NAME);
 
 		for (Role role : roleService.getRoles()) {
 			System.out.println(role);
