@@ -1,6 +1,5 @@
 package com.example.securingweb.request;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
-public class AuthorizationRequestBody {
+public class UsernamePasswordRequestBody {
 	private String username;
 	private String password;
 }

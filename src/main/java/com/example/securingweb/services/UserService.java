@@ -4,7 +4,7 @@ import com.example.securingweb.entites.Role;
 import com.example.securingweb.entites.User;
 import com.example.securingweb.repository.RoleRepository;
 import com.example.securingweb.repository.UserRepository;
-import com.example.securingweb.request.AuthorizationRequestBody;
+import com.example.securingweb.request.UsernamePasswordRequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,7 @@ public class UserService {
 		return userRepository.save(user);
 	}
 
-	public User createUser(AuthorizationRequestBody body) {
+	public User createUser(UsernamePasswordRequestBody body) {
 		String username = body.getUsername();
 		String password = body.getPassword();
 
