@@ -31,7 +31,7 @@ public class RoleController {
 	@GetMapping(value = "/user-role")
 	public Optional<Role> getUserRole(HttpServletResponse response, @RequestBody TokenRequestBody body) throws IOException {
 		try {
-			User user = userService.findByUsername(javaWebTokenService.validateTokenAndGetUsername(body.getTokenValue()));
+			User user = userService.findByUsername(javaWebTokenService.validateTokenAndGetUsername(body.getCookie()));
 			if (user == null) {
 				response.sendError(400, "Cannot find user");
 				return Optional.empty();

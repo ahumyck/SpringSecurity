@@ -7,8 +7,6 @@ import java.util.Date;
 
 @AllArgsConstructor
 @Getter
-public class JavaWebToken {
+public class Cookie {
 	private final String value;
-	private final Date expirationDate;
-	private final long duration;
 }

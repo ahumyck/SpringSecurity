@@ -1,7 +1,7 @@
 package com.example.securingweb.request;
 
 
-import com.example.securingweb.security.jwt.JavaWebToken;
+import com.example.securingweb.security.jwt.Cookie;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,5 +12,5 @@ import lombok.Setter;
 @Setter
 @Getter
 public class TokenRequestBody {
-	private String tokenValue;
+	private Cookie cookie;
 }

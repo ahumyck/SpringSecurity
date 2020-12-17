@@ -24,25 +24,24 @@ public class JavaWebTokenService {
 
 	private final static long DURATION = 15; //days
 
-	public JavaWebToken generateToken(String username) {
-		Date expirationDate = Date.from(LocalDate.now().plusDays(DURATION).atStartOfDay(ZoneId.systemDefault()).toInstant());
+	public Cookie generateToken(String username) {
 		String tokenValue = Jwts.
 				builder().
 				setIssuedAt(new Date()).
 				setSubject(username).
-				setExpiration(expirationDate).
+				setExpiration(Date.from(LocalDate.now().plusDays(DURATION).atStartOfDay(ZoneId.systemDefault()).toInstant())).
 				signWith(SignatureAlgorithm.HS512, jwtSecret).
 				compact();
-		return new JavaWebToken(tokenValue, expirationDate, DURATION);
+		return new Cookie(tokenValue);
 	}
 
-	public String validateTokenAndGetUsername(String token) {
+	public String validateTokenAndGetUsername(Cookie cookie) {
 		Jws<Claims> claimsJws;
 		try {
-			claimsJws = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+			claimsJws = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(cookie.getValue());
 		}
 		catch (Exception e) {
-			log.error("Error while validating token = " + token);
+			log.error("Error while validating token = " + cookie.getValue());
 			log.error(e.getMessage());
 			throw new RuntimeException(e);
 		}
