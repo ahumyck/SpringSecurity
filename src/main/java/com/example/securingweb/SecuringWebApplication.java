@@ -31,11 +31,6 @@ public class SecuringWebApplication {
 	public void init() {
 		roleService.createRole(USER_ROLE_NAME);
 		roleService.createRole(ADMIN_ROLE_NAME);
-
-		for (Role role : roleService.getRoles()) {
-			System.out.println(role);
-		}
-
 	}
 
 }

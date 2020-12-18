@@ -5,7 +5,7 @@ import com.example.securingweb.request.UsernamePasswordRequestBody;
 import com.example.securingweb.response.AuthorizationResponseBody;
 import com.example.securingweb.security.jwt.JavaWebToken;
 import com.example.securingweb.security.jwt.JavaWebTokenService;
-import com.example.securingweb.services.CookieService;
+import com.example.securingweb.security.cookie.CookieService;
 import com.example.securingweb.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,7 +1,7 @@
 package com.example.securingweb.security.jwt;
 
 import com.example.securingweb.security.userdetails.CustomUserDetailService;
-import com.example.securingweb.services.CookieService;
+import com.example.securingweb.security.cookie.CookieService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

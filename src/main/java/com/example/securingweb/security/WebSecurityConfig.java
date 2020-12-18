@@ -32,21 +32,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private JavaWebTokenFilter javaWebTokenFilter;
 
     @Autowired
-    private RoleService roleService;
-
-    @Autowired
     private CustomUserDetailService userDetailService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
     }
-
-//    @Bean(BeanIds.AUTHENTICATION_MANAGER)
-//    @Override
-//    public AuthenticationManager authenticationManagerBean() throws Exception {
-//        return super.authenticationManagerBean();
-//    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

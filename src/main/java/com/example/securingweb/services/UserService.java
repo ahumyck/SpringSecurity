@@ -30,13 +30,6 @@ public class UserService {
 		this.passwordEncoder = passwordEncoder;
 	}
 
-	public User saveUser(User user) {
-		Role role = roleRepository.findByRoleName(USER_ROLE_NAME);
-		user.setRole(role);
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		return userRepository.save(user);
-	}
-
 	public User createAdmin(UsernamePasswordRequestBody body){
 		return createUser(body, ADMIN_ROLE_NAME);
 	}

@@ -1,4 +1,4 @@
-package com.example.securingweb.services;
+package com.example.securingweb.security.cookie;
 
 import com.example.securingweb.security.jwt.JavaWebToken;
 import lombok.extern.slf4j.Slf4j;
