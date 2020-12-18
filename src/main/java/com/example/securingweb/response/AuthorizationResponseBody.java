@@ -11,5 +11,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AuthorizationResponseBody {
-	private String tokenValue;
+	private String message;
 }

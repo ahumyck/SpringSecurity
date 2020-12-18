@@ -11,4 +11,5 @@ import java.util.Date;
 @ToString
 public class JavaWebToken {
 	private final String value;
+	private final Integer duration;
 }
