@@ -20,7 +20,6 @@ public class CookieService {
     private String cookieName;
 
     public Cookie createTokenCookie(String token, int duration) {
-        log.info("cookieName = " + cookieName);
         Cookie cookie = new Cookie(cookieName, token);
         cookie.setMaxAge(duration);
         cookie.setPath("/");
