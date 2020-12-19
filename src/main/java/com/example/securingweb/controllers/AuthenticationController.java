@@ -46,15 +46,15 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/sign-in")
-    public AuthorizationResponseBody singIn(HttpServletResponse response, @RequestBody UsernamePasswordRequestBody body) throws IOException {
+    public String singIn(HttpServletResponse response, @RequestBody UsernamePasswordRequestBody body) throws IOException {
         User user = userService.findByUsername(body.getUsername());
         if (user == null) {
             response.sendError(400, "Cannot find user");
-            return new AuthorizationResponseBody("Cannot authorize username " + body.getUsername());
+            return "Cannot authorize username " + body.getUsername();
         }
         JavaWebToken javaWebToken = javaWebTokenService.generateToken(user.getUsername());
         response.addCookie(cookieService.createTokenCookie(javaWebToken));
-        return new AuthorizationResponseBody("Authorization successful, check your cookie");
+        return "Authorization successful, check your cookie";
     }
 
 }

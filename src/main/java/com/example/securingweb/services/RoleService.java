@@ -5,7 +5,7 @@ import com.example.securingweb.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("roleService")
+@Service
 public class RoleService {
 
     @Autowired

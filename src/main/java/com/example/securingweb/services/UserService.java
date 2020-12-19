@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import static com.example.securingweb.SecuringWebApplication.ADMIN_ROLE_NAME;
 import static com.example.securingweb.SecuringWebApplication.USER_ROLE_NAME;
 
-@Service("userService")
+@Service
 public class UserService {
 
 	@Autowired

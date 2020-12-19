@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 
-@Service("cookieService")
+@Service
 @Slf4j
 public class CookieService {
 
