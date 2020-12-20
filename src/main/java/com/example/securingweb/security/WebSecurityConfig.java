@@ -24,59 +24,50 @@ import static com.example.securingweb.SecuringWebApplication.USER_ROLE_NAME;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(
-        securedEnabled = true,
-        jsr250Enabled = true,
-        prePostEnabled = true
-)
+@EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private CustomUserDetailService userDetailService;
+	@Autowired
+	private CustomUserDetailService userDetailService;
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
-    }
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
+	}
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.
-                httpBasic().
-                disable().
-                csrf().
-                disable().
-                sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).
-                and().
-                authorizeRequests().
-                antMatchers("/admin/*").hasAuthority(ADMIN_ROLE_NAME).
-                antMatchers("/user/*").hasAnyAuthority(USER_ROLE_NAME, ADMIN_ROLE_NAME).
-                antMatchers("/sign-up", "/sign-in").permitAll().
-                and().addFilterBefore(javaWebTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-    }
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.
+				csrf().disable().
+				authorizeRequests().
+				antMatchers("/admin/*").hasAuthority(ADMIN_ROLE_NAME).
+				antMatchers("/user/*").hasAnyAuthority(USER_ROLE_NAME, ADMIN_ROLE_NAME).
+				antMatchers("/sign-up", "/sign-in").permitAll().
+				and().addFilterBefore(javaWebTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+	}
 
-    @Bean
-    JavaWebTokenFilter javaWebTokenFilter() {
-        return new JavaWebTokenFilter(javaWebTokenService(), userDetailService, cookieService());
-    }
+	@Bean
+	JavaWebTokenFilter javaWebTokenFilter() {
+		return new JavaWebTokenFilter(javaWebTokenService(), userDetailService, cookieService());
+	}
 
-    @Bean
-    public JavaWebTokenService javaWebTokenService() {
-        return new JavaWebTokenService();
-    }
+	@Bean
+	public JavaWebTokenService javaWebTokenService() {
+		return new JavaWebTokenService();
+	}
 
-    @Bean
-    public CookieEncryptionService cookieEncryptionService() {
-        return new AESCookieEncryptionService();
-    }
+	@Bean
+	public CookieEncryptionService cookieEncryptionService() {
+		return new AESCookieEncryptionService();
+	}
 
-    @Bean
-    public CookieService cookieService() {
-        return new CookieService(cookieEncryptionService());
-    }
+	@Bean
+	public CookieService cookieService() {
+		return new CookieService(cookieEncryptionService());
+	}
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 }
