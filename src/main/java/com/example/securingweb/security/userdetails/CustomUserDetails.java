@@ -1,23 +1,23 @@
 package com.example.securingweb.security.userdetails;
 
 import com.example.securingweb.entites.User;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
-@Slf4j
 public class CustomUserDetails implements UserDetails {
-
 
     private final User user;
 
     public CustomUserDetails(User user) {
         this.user = user;
+    }
+
+    public User getUser() {
+        return user;
     }
 
     @Override

@@ -28,15 +28,15 @@ public class RoleController {
     @Autowired
     private CookieService cookieService;
 
-    @GetMapping(value = "/user-role")
+    @GetMapping(value = "/user/role")
     public Optional<Role> getUserRole(HttpServletResponse response) throws IOException {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user = customUserDetails.getUser();
 
-        User user = userService.findByUsername(customUserDetails.getUsername());
         if (user == null) {
-            response.sendError(400, "Cannot find user");
+            response.sendError(400, "No cookie");
             return Optional.empty();
         }
         return Optional.of(user.getRole());

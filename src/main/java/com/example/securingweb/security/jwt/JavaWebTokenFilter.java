@@ -1,13 +1,10 @@
 package com.example.securingweb.security.jwt;
 
-import com.example.securingweb.security.userdetails.CustomUserDetailService;
 import com.example.securingweb.security.cookie.CookieService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.securingweb.security.userdetails.CustomUserDetailService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -17,19 +14,19 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-
-@Component
-@Slf4j
 public class JavaWebTokenFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JavaWebTokenService javaWebTokenService;
+    private final JavaWebTokenService javaWebTokenService;
 
-    @Autowired
-    private CustomUserDetailService customUserDetailService;
+    private final CustomUserDetailService customUserDetailService;
 
-    @Autowired
-    private CookieService cookieService;
+    private final CookieService cookieService;
+
+    public JavaWebTokenFilter(JavaWebTokenService javaWebTokenService, CustomUserDetailService customUserDetailService, CookieService cookieService) {
+        this.javaWebTokenService = javaWebTokenService;
+        this.customUserDetailService = customUserDetailService;
+        this.cookieService = cookieService;
+    }
 
 
     @Override

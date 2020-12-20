@@ -35,12 +35,12 @@ public class AESCookieEncryptionService implements CookieEncryptionService {
         return generateBytes(secureRandom, GCM_NONCE_LENGTH);
     }
 
-    private GCMParameterSpec generateSpec(SecureRandom secureRandom) {
-        return new GCMParameterSpec(GCM_TAG_LENGTH * 8, generateNonce(secureRandom));
-    }
-
     private byte[] generateAAD(SecureRandom secureRandom) {
         return generateBytes(secureRandom, 16);
+    }
+
+    private GCMParameterSpec generateSpec(SecureRandom secureRandom) {
+        return new GCMParameterSpec(GCM_TAG_LENGTH * 8, generateNonce(secureRandom));
     }
 
     @Override

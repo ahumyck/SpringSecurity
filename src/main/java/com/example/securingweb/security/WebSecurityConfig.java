@@ -32,9 +32,6 @@ import static com.example.securingweb.SecuringWebApplication.USER_ROLE_NAME;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private JavaWebTokenFilter javaWebTokenFilter;
-
-    @Autowired
     private CustomUserDetailService userDetailService;
 
     @Override
@@ -53,10 +50,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 and().
                 authorizeRequests().
                 antMatchers("/admin/*").hasAuthority(ADMIN_ROLE_NAME).
-                antMatchers("/user/*").hasAuthority(USER_ROLE_NAME).
-                antMatchers("/user-role").hasAnyAuthority(USER_ROLE_NAME, ADMIN_ROLE_NAME).
+                antMatchers("/user/*").hasAnyAuthority(USER_ROLE_NAME, ADMIN_ROLE_NAME).
                 antMatchers("/sign-up", "/sign-in").permitAll().
-                and().addFilterBefore(javaWebTokenFilter, UsernamePasswordAuthenticationFilter.class);
+                and().addFilterBefore(javaWebTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+    }
+
+    @Bean
+    JavaWebTokenFilter javaWebTokenFilter() {
+        return new JavaWebTokenFilter(javaWebTokenService(), userDetailService, cookieService());
     }
 
     @Bean
@@ -65,13 +66,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public CookieEncryptionService defaultCookieEncryptionService() {
+    public CookieEncryptionService cookieEncryptionService() {
         return new AESCookieEncryptionService();
     }
 
     @Bean
     public CookieService cookieService() {
-        return new CookieService(defaultCookieEncryptionService());
+        return new CookieService(cookieEncryptionService());
     }
 
     @Bean
