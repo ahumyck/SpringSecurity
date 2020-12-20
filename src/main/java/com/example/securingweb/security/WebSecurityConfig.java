@@ -1,8 +1,11 @@
 package com.example.securingweb.security;
 
+import com.example.securingweb.security.cookie.CookieService;
+import com.example.securingweb.security.cookie.encryption.AESCookieEncryptionService;
+import com.example.securingweb.security.cookie.encryption.CookieEncryptionService;
 import com.example.securingweb.security.jwt.JavaWebTokenFilter;
+import com.example.securingweb.security.jwt.JavaWebTokenService;
 import com.example.securingweb.security.userdetails.CustomUserDetailService;
-import com.example.securingweb.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -54,6 +57,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 antMatchers("/user-role").hasAnyAuthority(USER_ROLE_NAME, ADMIN_ROLE_NAME).
                 antMatchers("/sign-up", "/sign-in").permitAll().
                 and().addFilterBefore(javaWebTokenFilter, UsernamePasswordAuthenticationFilter.class);
+    }
+
+    @Bean
+    public JavaWebTokenService javaWebTokenService() {
+        return new JavaWebTokenService();
+    }
+
+    @Bean
+    public CookieEncryptionService defaultCookieEncryptionService() {
+        return new AESCookieEncryptionService();
+    }
+
+    @Bean
+    public CookieService cookieService() {
+        return new CookieService(defaultCookieEncryptionService());
     }
 
     @Bean

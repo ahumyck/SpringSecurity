@@ -1,26 +1,23 @@
 package com.example.securingweb.security.cookie;
 
+import com.example.securingweb.security.cookie.encryption.CookieEncryptionService;
 import com.example.securingweb.security.jwt.JavaWebToken;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import lombok.AllArgsConstructor;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 
-@Service
-@Slf4j
+@AllArgsConstructor
 public class CookieService {
 
+    private final String cookieName = "token";
 
-    @Value("${token.name}")
-    private String cookieName;
+    private final CookieEncryptionService cookieEncryptionService;
 
     public Cookie createTokenCookie(String token, int duration) {
-        Cookie cookie = new Cookie(cookieName, token);
+        Cookie cookie = new Cookie(cookieName, cookieEncryptionService.encrypt(token));
         cookie.setMaxAge(duration);
         cookie.setPath("/");
         return cookie;
@@ -41,7 +38,7 @@ public class CookieService {
             if (cookieName.equals(cookie.getName())) {
                 String token = cookie.getValue();
                 if (token == null) return Optional.empty();
-                return Optional.of(token);
+                return Optional.of(cookieEncryptionService.decrypt(token));
             }
         }
         return Optional.empty();

@@ -5,25 +5,17 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
-@Service
-@Slf4j
 public class JavaWebTokenService {
 
+    //TODO: AWS Secret Manager
+    private final static String jwtSecret = "javamaster";
 
-    @Value("${jwt.secret}") //TODO: AWS Secret Manager
-    private String jwtSecret;
-
-    @Value("${token.duration}")
-    private Integer duration;
+    private final static Integer duration = 604800; //7 days
 
     public JavaWebToken generateToken(String username) {
         String token = Jwts.
@@ -40,8 +32,6 @@ public class JavaWebTokenService {
         try {
             claimsJws = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(javaWebToken);
         } catch (Exception e) {
-            log.error("Error while validating token = " + javaWebToken);
-            log.error(e.getMessage());
             throw new RuntimeException(e);
         }
 
