@@ -20,6 +20,7 @@ public class CookieService {
         Cookie cookie = new Cookie(cookieName, cookieEncryptionService.encrypt(token));
         cookie.setMaxAge(duration);
         cookie.setPath("/");
+        cookie.setHttpOnly(true);
         return cookie;
     }
 
@@ -33,12 +34,12 @@ public class CookieService {
 
     public Optional<String> getCookieFromRequest(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
-        if (cookies == null) return Optional.empty();
-        for (Cookie cookie : cookies) {
-            if (cookieName.equals(cookie.getName())) {
-                String token = cookie.getValue();
-                if (token == null) return Optional.empty();
-                return Optional.of(cookieEncryptionService.decrypt(token));
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookieName.equals(cookie.getName())) {
+                    String token = cookie.getValue();
+                    if (token != null) return Optional.of(cookieEncryptionService.decrypt(token));
+                }
             }
         }
         return Optional.empty();

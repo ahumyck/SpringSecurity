@@ -1,6 +1,7 @@
-package com.example.securingweb.security.jwt;
+package com.example.securingweb.security.filters;
 
 import com.example.securingweb.security.cookie.CookieService;
+import com.example.securingweb.security.jwt.JavaWebTokenService;
 import com.example.securingweb.security.userdetails.CustomUserDetailService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,10 +35,14 @@ public class JavaWebTokenFilter extends OncePerRequestFilter {
         Optional<String> token = cookieService.getCookieFromRequest(request);
 
         token.ifPresent(javaWebToken -> {
-            String username = javaWebTokenService.validateTokenAndGetUsername(javaWebToken);
-            UserDetails userDetails = customUserDetailService.loadUserByUsername(username);
-            UsernamePasswordAuthenticationToken userAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(userAuthenticationToken);
+            try {
+                String username = javaWebTokenService.validateTokenAndGetUsername(javaWebToken);
+                UserDetails userDetails = customUserDetailService.loadUserByUsername(username);
+                UsernamePasswordAuthenticationToken userAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(userAuthenticationToken);
+            } catch (Exception ignored) {
+            }
+
         });
 
         filterChain.doFilter(request, response);
