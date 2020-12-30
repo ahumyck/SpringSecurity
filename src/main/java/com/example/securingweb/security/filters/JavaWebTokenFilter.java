@@ -3,6 +3,7 @@ package com.example.securingweb.security.filters;
 import com.example.securingweb.security.cookie.CookieService;
 import com.example.securingweb.security.jwt.JavaWebTokenService;
 import com.example.securingweb.security.userdetails.CustomUserDetailService;
+import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
+@AllArgsConstructor
 public class JavaWebTokenFilter extends OncePerRequestFilter {
 
     private final JavaWebTokenService javaWebTokenService;
@@ -23,15 +25,10 @@ public class JavaWebTokenFilter extends OncePerRequestFilter {
 
     private final CookieService cookieService;
 
-    public JavaWebTokenFilter(JavaWebTokenService javaWebTokenService, CustomUserDetailService customUserDetailService, CookieService cookieService) {
-        this.javaWebTokenService = javaWebTokenService;
-        this.customUserDetailService = customUserDetailService;
-        this.cookieService = cookieService;
-    }
-
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         Optional<String> token = cookieService.getCookieFromRequest(request);
 
         token.ifPresent(javaWebToken -> {

@@ -12,9 +12,6 @@ import java.util.Date;
 
 public class JavaWebTokenService {
 
-    //TODO: AWS Secret Manager
-    private final static String jwtSecret = "javamaster";
-
     private final static Integer duration = 604800; //7 days
 
     public JavaWebToken generateToken(String username) {
@@ -46,5 +43,8 @@ public class JavaWebTokenService {
             return body.getSubject();
         }
     }
+
+    private final static String jwtSecret = "javamaster";
+
 
 }
