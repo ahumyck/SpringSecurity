@@ -3,7 +3,7 @@ package com.example.securingweb.controllers;
 import com.example.securingweb.entites.Role;
 import com.example.securingweb.entites.User;
 import com.example.securingweb.security.cookie.CookieService;
-import com.example.securingweb.security.jwt.JavaWebTokenService;
+import com.example.securingweb.security.jwt.JsonWebTokenService;
 import com.example.securingweb.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,7 +19,7 @@ public class RoleController {
     private UserService userService;
 
     @Autowired
-    private JavaWebTokenService javaWebTokenService;
+    private JsonWebTokenService jsonWebTokenService;
 
     @Autowired
     private CookieService cookieService;

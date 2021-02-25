@@ -1,7 +1,7 @@
 package com.example.securingweb.security.cookie;
 
 import com.example.securingweb.security.cookie.encryption.CookieEncryptionService;
-import com.example.securingweb.security.jwt.JavaWebToken;
+import com.example.securingweb.security.jwt.JsonWebToken;
 import lombok.AllArgsConstructor;
 
 import javax.servlet.http.Cookie;
@@ -24,8 +24,8 @@ public class CookieService {
         return cookie;
     }
 
-    public Cookie createTokenCookie(JavaWebToken javaWebToken) {
-        return createTokenCookie(javaWebToken.getValue(), javaWebToken.getDuration());
+    public Cookie createTokenCookie(JsonWebToken jsonWebToken) {
+        return createTokenCookie(jsonWebToken.getValue(), jsonWebToken.getDuration());
     }
 
     public Cookie deleteCookie(String token) {

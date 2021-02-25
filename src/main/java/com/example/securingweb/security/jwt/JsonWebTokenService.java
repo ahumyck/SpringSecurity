@@ -10,18 +10,19 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
-public class JavaWebTokenService {
+public class JsonWebTokenService {
 
     private final static Integer duration = 604800; //7 days
+    private final static String jwtSecret = "javamaster";
 
-    public JavaWebToken generateToken(String username) {
+    public JsonWebToken generateToken(String username) {
         String token = Jwts.
                 builder().
                 setSubject(username).
                 setExpiration(Date.from(LocalDate.now().plusDays(duration).atStartOfDay(ZoneId.systemDefault()).toInstant())).
                 signWith(SignatureAlgorithm.HS512, jwtSecret).
                 compact();
-        return new JavaWebToken(token, duration);
+        return new JsonWebToken(token, duration);
     }
 
     public String validateTokenAndGetUsername(String javaWebToken) {
@@ -43,8 +44,5 @@ public class JavaWebTokenService {
             return body.getSubject();
         }
     }
-
-    private final static String jwtSecret = "javamaster";
-
 
 }

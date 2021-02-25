@@ -9,7 +9,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Getter
 @ToString
-public class JavaWebToken {
+public class JsonWebToken {
 	private final String value;
 	private final Integer duration;
 }
