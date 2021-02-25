@@ -54,7 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 antMatchers("/user/*").hasAnyAuthority(USER_ROLE_NAME, ADMIN_ROLE_NAME).
                 antMatchers("/sign-up", "/sign-in").permitAll().
                 and().
-                addFilterBefore(javaWebTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+                addFilterBefore(jsonWebTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
@@ -70,12 +70,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public JavaWebTokenFilter javaWebTokenFilter() {
-        return new JavaWebTokenFilter(javaWebTokenService(), userDetailService, cookieService());
+    public JavaWebTokenFilter jsonWebTokenFilter() {
+        return new JavaWebTokenFilter(jsonWebTokenService(), userDetailService, cookieService());
     }
 
     @Bean
-    public JsonWebTokenService javaWebTokenService() {
+    public JsonWebTokenService jsonWebTokenService() {
         return new JsonWebTokenService();
     }
 
