@@ -4,6 +4,7 @@ import com.example.securingweb.security.cookie.CookieService;
 import com.example.securingweb.security.jwt.JsonWebTokenService;
 import com.example.securingweb.security.userdetails.CustomUserDetailService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
+@Slf4j
 @AllArgsConstructor
 public class JavaWebTokenFilter extends OncePerRequestFilter {
 
@@ -30,7 +32,7 @@ public class JavaWebTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         Optional<String> token = cookieService.getCookieFromRequest(request);
-
+        log.info("=> Is token present: " + token.isPresent());
         token.ifPresent(javaWebToken -> {
             try {
                 String username = jsonWebTokenService.validateTokenAndGetUsername(javaWebToken);
@@ -38,6 +40,7 @@ public class JavaWebTokenFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken userAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(userAuthenticationToken);
             } catch (Exception ignored) {
+                log.error("unpresent", ignored);
             }
 
         });

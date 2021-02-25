@@ -3,6 +3,7 @@ package com.example.securingweb.security;
 import com.example.securingweb.security.cookie.CookieService;
 import com.example.securingweb.security.cookie.encryption.AESCookieEncryptionService;
 import com.example.securingweb.security.cookie.encryption.CookieEncryptionService;
+import com.example.securingweb.security.cookie.encryption.DefaultCookieEncryptionService;
 import com.example.securingweb.security.filters.CsrfTokenFilter;
 import com.example.securingweb.security.filters.JavaWebTokenFilter;
 import com.example.securingweb.security.jwt.JsonWebTokenService;
@@ -52,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 authorizeRequests().
                 antMatchers("/admin/*").hasAuthority(ADMIN_ROLE_NAME).
                 antMatchers("/user/*").hasAnyAuthority(USER_ROLE_NAME, ADMIN_ROLE_NAME).
-                antMatchers("/sign-up", "/sign-in").permitAll().
+                antMatchers("/sign-up", "/sign-in", "/secret", "/vzlomjopi").permitAll().
                 and().
                 addFilterBefore(jsonWebTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
@@ -81,7 +82,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public CookieEncryptionService cookieEncryptionService() {
-        return new AESCookieEncryptionService();
+        return new DefaultCookieEncryptionService();
     }
 
     @Bean
