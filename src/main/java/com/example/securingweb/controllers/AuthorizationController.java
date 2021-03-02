@@ -2,9 +2,10 @@ package com.example.securingweb.controllers;
 
 import com.example.securingweb.entites.User;
 import com.example.securingweb.request.UsernamePasswordRequestBody;
+import com.example.securingweb.security.cookie.CookieService;
 import com.example.securingweb.security.jwt.JsonWebToken;
 import com.example.securingweb.security.jwt.JsonWebTokenService;
-import com.example.securingweb.security.cookie.CookieService;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import com.example.securingweb.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import static com.example.securingweb.security.jwt.JsonWebTokenService.JWT_SECRET;
 
@@ -61,13 +63,13 @@ public class AuthorizationController {
 
     //todo just for test, need impl in future
     @GetMapping(value = "/secret")
-    public String secret() throws IOException {
+    public String secret() {
         return JWT_SECRET;
     }
 
     //todo just for test, need remove in future
     @GetMapping(value = "/vzlomjopi")
-    public String vzlom() throws IOException {
-        return "c2VjcmV0";// base64encoded
+    public String vzlom() {
+        return Base64.encode("secret".getBytes(StandardCharsets.UTF_8)); //c2VjcmV0
     }
 }

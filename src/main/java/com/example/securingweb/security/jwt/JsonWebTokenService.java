@@ -2,6 +2,7 @@ package com.example.securingweb.security.jwt;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -11,6 +12,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.RestTemplate;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -21,17 +23,16 @@ public class JsonWebTokenService {
 
     private final static Integer duration = 604800; //7 days
     //todo это упразнится потому что будем юзать jku
-    public final static String JWT_SECRET = "amF2YW1hc3Rlcg==";// base64encoded
+    public final static String JWT_SECRET = Base64.encode("javamaster".getBytes(StandardCharsets.UTF_8)); //"amF2YW1hc3Rlcg=="
 
     public JsonWebToken generateToken(String username) {
-        String token = Jwts.
-                builder().
-                setHeaderParam("jku", "http://localhost:8080/secret").
-                setSubject(username).
-                setExpiration(Date.from(LocalDate.now().plusDays(duration).atStartOfDay(ZoneId.systemDefault()).toInstant())).
-                //todo сделать запрос на jku сервис который вернет секрет
-                        signWith(SignatureAlgorithm.HS512, JWT_SECRET).
-                        compact();
+        //todo сделать запрос на jku сервис который вернет секрет
+        String token = Jwts.builder()
+                .setHeaderParam("jku", "http://localhost:8080/secret")
+                .setSubject(username)
+                .setExpiration(Date.from(LocalDate.now().plusDays(duration).atStartOfDay(ZoneId.systemDefault()).toInstant()))
+                .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
+                .compact();
         return new JsonWebToken(token, duration);
     }
 

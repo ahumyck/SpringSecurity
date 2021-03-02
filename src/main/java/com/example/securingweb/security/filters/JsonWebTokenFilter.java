@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @Slf4j
 @AllArgsConstructor
-public class JavaWebTokenFilter extends OncePerRequestFilter {
+public class JsonWebTokenFilter extends OncePerRequestFilter {
 
     private final JsonWebTokenService jsonWebTokenService;
 
@@ -39,8 +39,8 @@ public class JavaWebTokenFilter extends OncePerRequestFilter {
                 UserDetails userDetails = customUserDetailService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken userAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(userAuthenticationToken);
-            } catch (Exception ignored) {
-                log.error("unpresent", ignored);
+            } catch (Exception e) {
+                log.error("exception", e);
             }
 
         });

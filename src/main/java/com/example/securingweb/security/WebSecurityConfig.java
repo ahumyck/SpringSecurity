@@ -1,11 +1,10 @@
 package com.example.securingweb.security;
 
 import com.example.securingweb.security.cookie.CookieService;
-import com.example.securingweb.security.cookie.encryption.AESCookieEncryptionService;
 import com.example.securingweb.security.cookie.encryption.CookieEncryptionService;
 import com.example.securingweb.security.cookie.encryption.DefaultCookieEncryptionService;
 import com.example.securingweb.security.filters.CsrfTokenFilter;
-import com.example.securingweb.security.filters.JavaWebTokenFilter;
+import com.example.securingweb.security.filters.JsonWebTokenFilter;
 import com.example.securingweb.security.jwt.JsonWebTokenService;
 import com.example.securingweb.security.userdetails.CustomUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,8 +70,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public JavaWebTokenFilter jsonWebTokenFilter() {
-        return new JavaWebTokenFilter(jsonWebTokenService(), userDetailService, cookieService());
+    public JsonWebTokenFilter jsonWebTokenFilter() {
+        return new JsonWebTokenFilter(jsonWebTokenService(), userDetailService, cookieService());
     }
 
     @Bean
