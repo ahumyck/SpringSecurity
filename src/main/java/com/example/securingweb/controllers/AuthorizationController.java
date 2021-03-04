@@ -61,15 +61,5 @@ public class AuthorizationController {
         return "Authorization successful, check your cookie";
     }
 
-    //todo just for test, need impl in future
-    @GetMapping(value = "/secret")
-    public String secret() {
-        return JWT_SECRET;
-    }
 
-    //todo just for test, need remove in future
-    @GetMapping(value = "/vzlomjopi")
-    public String vzlom() {
-        return Base64.encode("secret".getBytes(StandardCharsets.UTF_8)); //c2VjcmV0
-    }
 }
