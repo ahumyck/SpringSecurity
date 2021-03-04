@@ -5,7 +5,10 @@ import com.example.securingweb.security.cookie.encryption.CookieEncryptionServic
 import com.example.securingweb.security.cookie.encryption.DefaultCookieEncryptionService;
 import com.example.securingweb.security.filters.CsrfTokenFilter;
 import com.example.securingweb.security.filters.JsonWebTokenFilter;
+import com.example.securingweb.security.jku.JkuService;
 import com.example.securingweb.security.jwt.JsonWebTokenService;
+import com.example.securingweb.security.jwt.JsonWebTokenServiceImpl;
+import com.example.securingweb.security.jwt.SecureJsonWebTokenService;
 import com.example.securingweb.security.userdetails.CustomUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -33,6 +36,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomUserDetailService userDetailService;
 
+    @Autowired
+    private JsonWebTokenFilter jsonWebTokenFilter;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
@@ -54,7 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 antMatchers("/user/*").hasAnyAuthority(USER_ROLE_NAME, ADMIN_ROLE_NAME).
                 antMatchers("/sign-up", "/sign-in", "/secret", "/vzlomjopi").permitAll().
                 and().
-                addFilterBefore(jsonWebTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+                addFilterBefore(jsonWebTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
@@ -70,13 +76,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public JsonWebTokenFilter jsonWebTokenFilter() {
-        return new JsonWebTokenFilter(jsonWebTokenService(), userDetailService, cookieService());
+    public JsonWebTokenFilter jsonWebTokenFilter(JsonWebTokenService jsonWebTokenService) {
+        return new JsonWebTokenFilter(jsonWebTokenService, userDetailService, cookieService());
     }
 
     @Bean
-    public JsonWebTokenService jsonWebTokenService() {
-        return new JsonWebTokenService();
+    public JkuService jkuService(){
+        return new JkuService();
+    }
+
+    @Bean
+    public JsonWebTokenService jsonWebTokenService(JkuService jkuService) {
+        return new SecureJsonWebTokenService(jkuService);
     }
 
     @Bean

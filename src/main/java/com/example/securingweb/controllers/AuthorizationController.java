@@ -5,19 +5,14 @@ import com.example.securingweb.request.UsernamePasswordRequestBody;
 import com.example.securingweb.security.cookie.CookieService;
 import com.example.securingweb.security.jwt.JsonWebToken;
 import com.example.securingweb.security.jwt.JsonWebTokenService;
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import com.example.securingweb.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
-import static com.example.securingweb.security.jwt.JsonWebTokenService.JWT_SECRET;
 
 @RestController
 public class AuthorizationController {
