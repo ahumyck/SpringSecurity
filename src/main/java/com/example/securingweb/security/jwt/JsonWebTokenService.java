@@ -1,7 +1,6 @@
 package com.example.securingweb.security.jwt;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -10,6 +9,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.TextCodec;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
@@ -24,6 +24,9 @@ public class JsonWebTokenService {
     private final static Integer duration = 604800; //7 days
     //todo это упразнится потому что будем юзать jku
     public final static String JWT_SECRET = Base64.encode("javamaster".getBytes(StandardCharsets.UTF_8)); //"amF2YW1hc3Rlcg=="
+
+    @Autowired
+    private JwtConverter converter;
 
     public JsonWebToken generateToken(String username) {
         //todo сделать запрос на jku сервис который вернет секрет
@@ -45,7 +48,8 @@ public class JsonWebTokenService {
         String rawHeaders = split[0];
 
         String origValue = TextCodec.BASE64URL.decodeToString(rawHeaders);
-        Map<String, Object> result = new ObjectMapper().readValue(origValue, Map.class);
+        log.info("=> origValue = " + origValue);
+        Map<String, Object> result = converter.convertResponse(origValue);
         log.info("=> ILLI log: " + result);
 
         //todo const
