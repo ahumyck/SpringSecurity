@@ -7,7 +7,6 @@ import com.example.securingweb.security.filters.CsrfTokenFilter;
 import com.example.securingweb.security.filters.JsonWebTokenFilter;
 import com.example.securingweb.security.jku.JkuService;
 import com.example.securingweb.security.jwt.JsonWebTokenService;
-import com.example.securingweb.security.jwt.JsonWebTokenServiceImpl;
 import com.example.securingweb.security.jwt.SecureJsonWebTokenService;
 import com.example.securingweb.security.userdetails.CustomUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +85,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public JsonWebTokenService jsonWebTokenService(JkuService jkuService) {
+    public SecureJsonWebTokenService jsonWebTokenService(JkuService jkuService) {
         return new SecureJsonWebTokenService(jkuService);
     }
 

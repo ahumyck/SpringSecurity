@@ -10,26 +10,19 @@ import org.jose4j.jwk.JsonWebKeySet;
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwt.JwtClaims;
-import org.jose4j.jwt.consumer.ErrorCodes;
 import org.jose4j.jwt.consumer.InvalidJwtException;
 import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 import org.jose4j.keys.resolvers.HttpsJwksVerificationKeyResolver;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.nio.charset.StandardCharsets;
 
 @Slf4j
 public class SecureJsonWebTokenService implements JsonWebTokenService {
 
     private final static Integer DURATION = 10080; //7 days
-    private final static Integer ACTIVE_BEFORE = 2;
+    private final static Integer ACTIVE_BEFORE = 2; // 2 mins
+    private final static String JKU_PARAM = "jku";
 
-    public static final byte[] SECRET_BYTES = ("JavaSuperPuperMasterPleaseSignMyJsonWebTokenOkay" +
-            "ThisStringWasOnly352bitsAndNowIwantItToBeMoreThan512bits").getBytes(StandardCharsets.UTF_8);
-
-    private JkuService jkuService;
+    private final JkuService jkuService;
 
     public SecureJsonWebTokenService(JkuService jkuService) {
         this.jkuService = jkuService;
@@ -38,13 +31,19 @@ public class SecureJsonWebTokenService implements JsonWebTokenService {
     @SneakyThrows
     public JsonWebToken generateToken(String username) {
         JwtClaims claims = new JwtClaims();
-        claims.setClaim("jku", jkuService.getDefaultJku());
+        String defaultJku = jkuService.getDefaultJku();
+        claims.setClaim(JKU_PARAM, defaultJku);
         claims.setExpirationTimeMinutesInTheFuture(DURATION); // time when the token will expire (7 days from now)
         claims.setGeneratedJwtId(); // a unique identifier for the token
         claims.setIssuedAtToNow();  // when the token was issued/created (now)
         claims.setNotBeforeMinutesInThePast(ACTIVE_BEFORE); // time before which the token is not yet valid (2 minutes ago)
         claims.setSubject(username); // the subject/principal is whom the token is about
-        return new JsonWebToken(signToken(claims, jkuService.getJsonWebKey(jkuService.getDefaultJku()).getJsonWebKeys().get(0)), DURATION);
+        JsonWebKeySet jsonWebKeySet = jkuService.getJsonWebKey(defaultJku);
+        return new JsonWebToken(signToken(claims, parseJsonWebKeySet(jsonWebKeySet)), DURATION);
+    }
+
+    private JsonWebKey parseJsonWebKeySet(JsonWebKeySet jsonWebKeySet) {
+        return jsonWebKeySet.getJsonWebKeys().get(0);
     }
 
     @SneakyThrows
@@ -87,35 +86,14 @@ public class SecureJsonWebTokenService implements JsonWebTokenService {
                         AlgorithmConstraints.ConstraintType.PERMIT, AlgorithmIdentifiers.HMAC_SHA512) // which is only RS256 here
                 .build(); // create the JwtConsumer instance
 
-        try
-        {
+        try {
             //  Validate the JWT and process it to the Claims
-            JwtClaims jwtClaims = jwtConsumer.processToClaims(javaWebToken);
-            System.out.println("JWT validation succeeded! " + jwtClaims);
-        }
-        catch (InvalidJwtException e)
-        {
+            return jwtConsumer.processToClaims(javaWebToken).getSubject();
+        } catch (InvalidJwtException e) {
             // InvalidJwtException will be thrown, if the JWT failed processing or validation in anyway.
             // Hopefully with meaningful explanations(s) about what went wrong.
-            System.out.println("Invalid JWT! " + e);
-
-            // Programmatic access to (some) specific reasons for JWT invalidity is also possible
-            // should you want different error handling behavior for certain conditions.
-
-            // Whether or not the JWT has expired being one common reason for invalidity
-            if (e.hasExpired())
-            {
-                System.out.println("JWT expired at " + e.getJwtContext().getJwtClaims().getExpirationTime());
-            }
-
-            // Or maybe the audience was invalid
-            if (e.hasErrorCode(ErrorCodes.AUDIENCE_INVALID))
-            {
-                System.out.println("JWT had wrong audience: " + e.getJwtContext().getJwtClaims().getAudience());
-            }
+            throw new RuntimeException("Invalid JWT! " + e);
         }
-
-        return "user";
     }
 
 
