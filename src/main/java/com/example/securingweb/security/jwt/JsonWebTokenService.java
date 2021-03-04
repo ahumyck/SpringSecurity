@@ -46,7 +46,6 @@ public class JsonWebTokenService {
         Jws<Claims> claimsJws;
         String[] split = javaWebToken.split("\\.");
         String rawHeaders = split[0];
-
         String origValue = TextCodec.BASE64URL.decodeToString(rawHeaders);
         log.info("=> origValue = " + origValue);
         Map<String, Object> result = converter.convertResponse(origValue);

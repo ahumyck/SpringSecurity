@@ -1,6 +1,5 @@
 package com.example.securingweb;
 
-import com.example.securingweb.security.cookie.encryption.AESCookieEncryptionService;
 import com.example.securingweb.services.RoleService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;

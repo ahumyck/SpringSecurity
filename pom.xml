@@ -32,11 +32,13 @@
 			<version>3.1.7</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.apache.cxf/cxf-rt-rs-security-jose-jaxrs -->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-rs-security-jose-jaxrs</artifactId>
 			<version>3.1.7</version>
 		</dependency>
+
 
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
