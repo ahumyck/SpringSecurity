@@ -23,7 +23,9 @@ public class JsonWebTokenService {
 
     private final static Integer duration = 604800; //7 days
     //todo это упразнится потому что будем юзать jku
-    public final static String JWT_SECRET = Base64.encode("javamaster".getBytes(StandardCharsets.UTF_8)); //"amF2YW1hc3Rlcg=="
+    public static final byte[] SECRET_BYTES = ("JavaSuperPuperMasterPleaseSignMyJsonWebTokenOkay" +
+            "ThisStringWasOnly352bitsAndNowIwantItToBeMoreThan512bits").getBytes(StandardCharsets.UTF_8);
+    public final static String JWT_SECRET = Base64.encode(SECRET_BYTES);
 
     @Autowired
     private JwtConverter converter;
