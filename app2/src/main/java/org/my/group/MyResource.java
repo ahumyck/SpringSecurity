@@ -1,39 +1,36 @@
-package com.ctf.jwtjku.controllers;
+package org.my.group;
 
-
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import lombok.extern.slf4j.Slf4j;
 import org.jose4j.jwk.JsonWebKeySet;
 import org.jose4j.jwk.OctetSequenceJsonWebKey;
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.keys.HmacKey;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import java.nio.charset.StandardCharsets;
 
 
-@Slf4j
-@RestController
-public class JkuController {
+@Path("/secret")
+public class MyResource {
+
+    private static final Logger log = LoggerFactory.getLogger(MyResource.class);
 
     private static final byte[] SECRET_BYTES = ("JavaSuperPuperMasterPleaseSignMyJsonWebTokenOkay" +
             "ThisStringWasOnly352bitsAndNowIwantItToBeMoreThan512bits").getBytes(StandardCharsets.UTF_8);
 
-    //todo just for test, need impl in future
-    @GetMapping(value = "/secret")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
     public String secret() {
         OctetSequenceJsonWebKey jsonWebKey = new OctetSequenceJsonWebKey(new HmacKey(SECRET_BYTES));
         jsonWebKey.setAlgorithm(AlgorithmIdentifiers.HMAC_SHA512);
         jsonWebKey.setKeyId(AlgorithmIdentifiers.HMAC_SHA512);
         JsonWebKeySet jsonWebKeySet = new JsonWebKeySet(jsonWebKey);
+        log.info("/secret endpoint return: " + jsonWebKeySet.toJson());
         return jsonWebKeySet.toJson();
-
-    }
-
-    //todo just for test, need remove in future
-    @GetMapping(value = "/vzlomjopi")
-    public String vzlom() {
-        return Base64.encode("secret".getBytes(StandardCharsets.UTF_8)); //c2VjcmV0
     }
 }

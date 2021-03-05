@@ -6,7 +6,7 @@ import org.springframework.web.client.RestTemplate;
 
 public class JkuService {
 
-    private static final String DEFAULT_JKU = "http://localhost:8080/secret";
+    private static final String DEFAULT_JKU = "http://localhost:8081/secret";
     private final RestTemplate restTemplate = new RestTemplate();
 
     @SneakyThrows
