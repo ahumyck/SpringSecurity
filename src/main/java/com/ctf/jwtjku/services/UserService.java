@@ -33,6 +33,7 @@ public class UserService {
 			User user = new User();
 			user.setUsername(username);
 			user.setPassword(passwordEncoder.encode(password));
+			//todo use role service instead of repository
 			user.setRole(roleRepository.findByRoleName(role));
 			return userRepository.save(user);
 		}

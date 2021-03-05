@@ -26,6 +26,7 @@ public class SecuringWebApplication {
     }
 
 
+    //add Admin
     @PostConstruct
     public void init() {
         roleService.createRole(USER_ROLE_NAME);
