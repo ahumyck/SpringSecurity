@@ -1,6 +1,8 @@
 package com.ctf.jwtjku;
 
+import com.ctf.jwtjku.dto.request.UsernamePasswordRequestBody;
 import com.ctf.jwtjku.services.RoleService;
+import com.ctf.jwtjku.services.UserService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -16,6 +18,9 @@ public class SecuringWebApplication {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private UserService userService;
+
     public static final String USER_ROLE_NAME = "USER";
     public static final String ADMIN_ROLE_NAME = "ADMIN";
 
@@ -26,11 +31,11 @@ public class SecuringWebApplication {
     }
 
 
-    //add Admin
     @PostConstruct
     public void init() {
         roleService.createRole(USER_ROLE_NAME);
         roleService.createRole(ADMIN_ROLE_NAME);
+        userService.createAdmin(new UsernamePasswordRequestBody("Admin", "sg123bsjhjfddjh@#YG%RHJhdjhf"));
     }
 
 }

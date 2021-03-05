@@ -1,11 +1,11 @@
 package com.ctf.jwtjku.controllers;
 
+import com.ctf.jwtjku.dto.request.UsernamePasswordRequestBody;
+import com.ctf.jwtjku.model.entites.User;
 import com.ctf.jwtjku.security.cookie.CookieService;
 import com.ctf.jwtjku.security.jwt.JsonWebToken;
-import com.ctf.jwtjku.services.UserService;
-import com.ctf.jwtjku.model.entites.User;
-import com.ctf.jwtjku.dto.request.UsernamePasswordRequestBody;
 import com.ctf.jwtjku.security.jwt.JsonWebTokenService;
+import com.ctf.jwtjku.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,16 +33,6 @@ public class AuthorizationController {
             response.sendError(400, "Cannot create user");
         }
         return "Username " + body.getUsername() + " was signed-up";
-    }
-
-    //todo remove
-    @PostMapping(value = "/sign-up-admin")
-    public String singUpAdmin(HttpServletResponse response, @RequestBody UsernamePasswordRequestBody body) throws IOException {
-        User user = userService.createAdmin(body);
-        if (user == null) {
-            response.sendError(400, "Cannot create user");
-        }
-        return "Admin " + body.getUsername() + " was signed-up";
     }
 
 

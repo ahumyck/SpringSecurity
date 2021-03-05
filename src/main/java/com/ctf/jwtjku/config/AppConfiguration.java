@@ -32,8 +32,8 @@ public class AppConfiguration {
     }
 
     @Bean
-    public UserService userService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
-        return new UserService(userRepository, roleRepository, passwordEncoder);
+    public UserService userService(UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder) {
+        return new UserService(userRepository, roleService, passwordEncoder);
     }
 
     @Bean

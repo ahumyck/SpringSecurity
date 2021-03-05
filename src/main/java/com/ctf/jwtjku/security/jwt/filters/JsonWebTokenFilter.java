@@ -29,7 +29,6 @@ public class JsonWebTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         Optional<String> token = cookieService.getCookieFromRequest(request);
-        log.info("=> Is token present: " + token.isPresent());
         token.ifPresent(javaWebToken -> {
             try {
                 String username = jsonWebTokenService.validateTokenAndGetUsername(javaWebToken);
@@ -41,7 +40,6 @@ public class JsonWebTokenFilter extends OncePerRequestFilter {
             }
 
         });
-
         filterChain.doFilter(request, response);
     }
 }
