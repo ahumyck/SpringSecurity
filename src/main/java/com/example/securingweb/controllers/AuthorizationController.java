@@ -44,6 +44,7 @@ public class AuthorizationController {
         return "Admin " + body.getUsername() + " was signed-up";
     }
 
+
     @PostMapping(value = "/sign-in")
     public String singIn(HttpServletResponse response, @RequestBody UsernamePasswordRequestBody body) throws IOException {
         User user = userService.findByUsername(body.getUsername());
