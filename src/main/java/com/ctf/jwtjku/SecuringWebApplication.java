@@ -1,5 +1,6 @@
 package com.ctf.jwtjku;
 
+import com.ctf.jwtjku.services.PasswordKeeper;
 import com.ctf.jwtjku.services.RoleService;
 import com.ctf.jwtjku.services.SecureRandomPasswordGenerator;
 import com.ctf.jwtjku.services.UserService;
@@ -24,6 +25,9 @@ public class SecuringWebApplication {
     @Autowired
     private SecureRandomPasswordGenerator passwordGenerator;
 
+    @Autowired
+    private PasswordKeeper passwordKeeper;
+
     private static final int PASSWORD_LENGTH = 1024;
 
     public static final String USER_ROLE_NAME = "USER";
@@ -40,7 +44,9 @@ public class SecuringWebApplication {
     public void init() {
         roleService.createRole(USER_ROLE_NAME);
         roleService.createRole(ADMIN_ROLE_NAME);
-        userService.createAdmin("ADMIN", passwordGenerator.generatePasswordAndGetAsBase64(PASSWORD_LENGTH));
+        String adminPassword = passwordGenerator.generatePasswordAndGetAsBase64(PASSWORD_LENGTH);
+        passwordKeeper.storePassword(PasswordKeeper.ADMIN_PASS_KEY, adminPassword);
+        userService.createAdmin("Admin", adminPassword);
     }
 
 }
