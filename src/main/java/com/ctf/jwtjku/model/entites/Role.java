@@ -17,6 +17,7 @@ public class Role {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ROLE_ID")
 	@JsonIgnore
+	@ToString.Exclude
 	private long id;
 	private String roleName;
 

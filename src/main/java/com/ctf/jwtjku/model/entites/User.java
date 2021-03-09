@@ -15,11 +15,13 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "USER_ID")
 	@JsonIgnore
+	@ToString.Exclude
 	private long id;
 
 	@Column(unique = true)
 	private String username;
 	@JsonIgnore
+	@ToString.Exclude
 	private String password;
 
 	@ManyToOne
