@@ -18,14 +18,8 @@ public class TestSecurityController {
         return "Hi, " + user;
     }
 
-    @GetMapping(value = "/admin/hi")
-    public String sayHiAdministrator() {
+    @GetMapping(value = "/hi")
+    public String sayHi() {
         return response();
     }
-
-    @GetMapping(value = "/user/hi")
-    public String sayHiUser() {
-        return response();
-    }
-
 }
