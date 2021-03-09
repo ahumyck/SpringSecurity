@@ -1,5 +1,6 @@
 package com.ctf.jwtjku.security.jwt;
 
+import com.ctf.jwtjku.security.jwt.jku.CustomSimpleGet;
 import com.ctf.jwtjku.security.jwt.jku.JkuService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -40,12 +41,7 @@ public class SecureJsonWebTokenService implements JsonWebTokenService {
         claims.setIssuedAtToNow();  // when the token was issued/created (now)
         claims.setNotBeforeMinutesInThePast(ACTIVE_BEFORE); // time before which the token is not yet valid (2 minutes ago)
         claims.setSubject(username); // the subject/principal is whom the token is about
-        JsonWebKeySet jsonWebKeySet = jkuService.getJsonWebKey(defaultJku);
-        return new JsonWebToken(signToken(claims, parseJsonWebKeySet(jsonWebKeySet)), DURATION);
-    }
-
-    private JsonWebKey parseJsonWebKeySet(JsonWebKeySet jsonWebKeySet) {
-        return jsonWebKeySet.getJsonWebKeys().get(0);
+        return new JsonWebToken(signToken(claims, jkuService.getJsonWebKey(defaultJku)), DURATION);
     }
 
     @SneakyThrows
@@ -65,6 +61,7 @@ public class SecureJsonWebTokenService implements JsonWebTokenService {
         String jku = extractJku(javaWebToken);
 
         HttpsJwks httpsJkws = new HttpsJwks(jku);
+        httpsJkws.setSimpleHttpGet(new CustomSimpleGet());
 
         // The HttpsJwksVerificationKeyResolver uses JWKs obtained from the HttpsJwks and will select the
         // most appropriate one to use for verification based on the Key ID and other factors provided

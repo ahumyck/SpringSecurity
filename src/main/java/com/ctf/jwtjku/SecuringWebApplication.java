@@ -1,6 +1,6 @@
 package com.ctf.jwtjku;
 
-import com.ctf.jwtjku.services.PasswordKeeper;
+import com.ctf.jwtjku.services.PasswordService;
 import com.ctf.jwtjku.services.RoleService;
 import com.ctf.jwtjku.services.SecureRandomPasswordGenerator;
 import com.ctf.jwtjku.services.UserService;
@@ -11,6 +11,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import javax.annotation.PostConstruct;
+
+import static com.ctf.jwtjku.security.jwt.jku.JkuService.SECRET_PASSWORD_KEY;
 
 @SpringBootApplication
 @EnableJpaRepositories
@@ -26,9 +28,9 @@ public class SecuringWebApplication {
     private SecureRandomPasswordGenerator passwordGenerator;
 
     @Autowired
-    private PasswordKeeper passwordKeeper;
+    private PasswordService passwordService;
 
-    private static final int PASSWORD_LENGTH = 1024;
+    private static final int PASSWORD_LENGTH = 256;
 
     public static final String USER_ROLE_NAME = "USER";
     public static final String ADMIN_ROLE_NAME = "ADMIN";
@@ -45,7 +47,7 @@ public class SecuringWebApplication {
         roleService.createRole(USER_ROLE_NAME);
         roleService.createRole(ADMIN_ROLE_NAME);
         String adminPassword = passwordGenerator.generatePasswordAndGetAsBase64(PASSWORD_LENGTH);
-        passwordKeeper.storePassword(PasswordKeeper.ADMIN_PASS_KEY, adminPassword);
+        passwordService.storePassword(PasswordService.ADMIN_PASS_KEY, adminPassword);
         userService.createAdmin("Admin", adminPassword);
     }
 

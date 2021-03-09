@@ -31,6 +31,7 @@ public class JsonWebTokenFilter extends OncePerRequestFilter {
         Optional<String> token = cookieService.getCookieFromRequest(request);
         token.ifPresent(javaWebToken -> {
             try {
+                log.info("token: " + javaWebToken);
                 String username = jsonWebTokenService.validateTokenAndGetUsername(javaWebToken);
                 UserDetails userDetails = customUserDetailService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken userAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

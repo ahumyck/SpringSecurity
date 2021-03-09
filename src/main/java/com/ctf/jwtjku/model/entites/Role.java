@@ -1,5 +1,6 @@
 package com.ctf.jwtjku.model.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ROLE_ID")
+	@JsonIgnore
 	private long id;
 	private String roleName;
 

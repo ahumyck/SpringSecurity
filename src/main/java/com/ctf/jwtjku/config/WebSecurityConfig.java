@@ -40,9 +40,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 and().
                 authorizeRequests().
                 antMatchers("/hi").hasAnyAuthority(USER_ROLE_NAME, ADMIN_ROLE_NAME).
-                antMatchers("/admin/*").hasAuthority(ADMIN_ROLE_NAME).
-                antMatchers("/user/*").hasAnyAuthority(USER_ROLE_NAME, ADMIN_ROLE_NAME).
-                antMatchers("/sign-up", "/sign-in", "/secret", "/vzlomjopi").permitAll().
+                antMatchers("/secret").hasIpAddress("127.0.0.1/32").
+                antMatchers("/sign-up", "/sign-in").permitAll().
                 and().
                 addFilterBefore(jsonWebTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }

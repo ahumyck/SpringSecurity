@@ -10,7 +10,7 @@ import com.ctf.jwtjku.security.jwt.SecureJsonWebTokenService;
 import com.ctf.jwtjku.security.jwt.filters.JsonWebTokenFilter;
 import com.ctf.jwtjku.security.jwt.jku.JkuService;
 import com.ctf.jwtjku.security.userdetails.CustomUserDetailService;
-import com.ctf.jwtjku.services.PasswordKeeper;
+import com.ctf.jwtjku.services.PasswordService;
 import com.ctf.jwtjku.services.RoleService;
 import com.ctf.jwtjku.services.SecureRandomPasswordGenerator;
 import com.ctf.jwtjku.services.UserService;
@@ -74,7 +74,7 @@ public class AppConfiguration {
     }
 
     @Bean
-    public PasswordKeeper passwordKeeper() {
-        return new PasswordKeeper();
+    public PasswordService passwordKeeper(SecureRandomPasswordGenerator passwordGenerator) {
+        return new PasswordService(passwordGenerator);
     }
 }

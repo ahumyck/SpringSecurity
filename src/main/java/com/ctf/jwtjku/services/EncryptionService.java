@@ -12,14 +12,14 @@ import java.util.Base64;
 
 public class EncryptionService {
 
-    private final PasswordKeeper keeper;
+    private final PasswordService keeper;
 
     // AES-GCM parameters
     private static final int AES_KEY_SIZE = 128; //bits
     private static final int GCM_NONCE_LENGTH = 12; // bytes
     private static final int GCM_TAG_LENGTH = 16; // bytes
 
-    public EncryptionService(PasswordKeeper keeper) {
+    public EncryptionService(PasswordService keeper) {
         this.keeper = keeper;
     }
 
@@ -50,7 +50,7 @@ public class EncryptionService {
 
     @SneakyThrows
     public String encrypt(String input) {
-        SecureRandom random = new SecureRandom(keeper.getPassword(PasswordKeeper.ADMIN_PASS_KEY).getBytes());
+        SecureRandom random = new SecureRandom(keeper.getPassword(PasswordService.ADMIN_PASS_KEY).getBytes());
         SecretKey secretKey = getSecretKey(random);
 
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding", "SunJCE");
@@ -63,7 +63,7 @@ public class EncryptionService {
 
     @SneakyThrows
     public String decrypt(String input) {
-        SecureRandom random = new SecureRandom(keeper.getPassword(PasswordKeeper.ADMIN_PASS_KEY).getBytes());
+        SecureRandom random = new SecureRandom(keeper.getPassword(PasswordService.ADMIN_PASS_KEY).getBytes());
         SecretKey secretKey = getSecretKey(random);
 
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding", "SunJCE");
