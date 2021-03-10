@@ -15,7 +15,6 @@ public class Role {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ROLE_ID")
 	@JsonIgnore
 	@ToString.Exclude
 	private long id;

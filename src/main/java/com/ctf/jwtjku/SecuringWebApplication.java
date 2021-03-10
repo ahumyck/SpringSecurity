@@ -12,8 +12,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import javax.annotation.PostConstruct;
 
-import static com.ctf.jwtjku.security.jwt.jku.JkuService.SECRET_PASSWORD_KEY;
-
 @SpringBootApplication
 @EnableJpaRepositories
 public class SecuringWebApplication {

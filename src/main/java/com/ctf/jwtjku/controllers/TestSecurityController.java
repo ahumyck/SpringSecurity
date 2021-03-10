@@ -1,8 +1,8 @@
 package com.ctf.jwtjku.controllers;
 
 
-import com.ctf.jwtjku.security.userdetails.CustomUserDetails;
 import com.ctf.jwtjku.model.entites.User;
+import com.ctf.jwtjku.security.userdetails.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +21,7 @@ public class TestSecurityController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
         User user = customUserDetails.getUser();
-        if(user.getRole().getRoleName().equals(ADMIN_ROLE_NAME))
+        if (user.getRole().getRoleName().equals(ADMIN_ROLE_NAME))
             return "Hi, flag is here " + CTF_FLAG;
         return "Hi, " + user;
     }
