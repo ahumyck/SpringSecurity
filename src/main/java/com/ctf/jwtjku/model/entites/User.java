@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @Entity
+@ToString
 public class User {
 
 	@Id
