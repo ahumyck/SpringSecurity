@@ -7,9 +7,12 @@ Put following in "Dockerfile":
 
 ```python
 FROM java:8
-ADD jarname.jar jarname.jar
-EXPOSE 8085
-ENTRYPOINT ["java", "-jar", "jarname.jar"]
+FROM gradle:6.8.3-jdk11 AS build
+ADD . /home
+WORKDIR /home
+RUN gradle build
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "/build/libs/securing-web-0.0.1-SNAPSHOT.jar"]
 
 ```
 
