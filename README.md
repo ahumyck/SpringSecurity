@@ -23,13 +23,13 @@ sudo docker build -t app-test .
 
 If we want to launch this docker, then we can use following command:
 ```python
-sudo docker run -d -p 8085:8085 app-test
+sudo docker run -d -p 8080:8080 app-test
 ```
 This command will launch docker in the background and "process hash" will be returned to the console
 
 Another way to launch docker:
 ```python
-sudo docker run -p 8085:8085 app-test
+sudo docker run -p 8080:8080 app-test
 ```
 
 Default way to launch executable. This allows us to see our application,
