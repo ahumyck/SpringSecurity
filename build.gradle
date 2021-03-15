@@ -4,7 +4,7 @@ plugins {
     id 'java'
 }
 
-group = 'com.example'
+group = 'com.ctf'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
@@ -21,17 +21,22 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.16'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
 
+    compile 'javax.servlet:jstl:1.2'
+    compile 'org.apache.tomcat.embed:tomcat-embed-jasper:9.0.27'
+
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     implementation 'org.bitbucket.b_c:jose4j:0.7.6'
-    implementation 'org.glassfish.jersey.core:jersey-common:3.0.0'
-    implementation 'org.glassfish.jersey.core:jersey-client:3.0.0'
-    implementation 'org.glassfish.jersey.core:jersey-server:3.0.0'
-    implementation 'org.glassfish.jersey.containers:jersey-container-jdk-http:3.0.0'
-    implementation 'org.glassfish.jersey.containers:jersey-container-servlet:3.0.0'
+//    implementation 'org.glassfish.jersey.core:jersey-common:3.0.0'
+//    implementation 'org.glassfish.jersey.core:jersey-client:3.0.0'
+//    implementation 'org.glassfish.jersey.core:jersey-server:3.0.0'
+//    implementation 'org.glassfish.jersey.containers:jersey-container-jdk-http:3.0.0'
+//    implementation 'org.glassfish.jersey.containers:jersey-container-servlet:3.0.0'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.security:spring-security-test'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.eclipse.jdt.core.compiler:ecj:4.6.1'
+    compile 'org.springframework.security:spring-security-taglibs:5.2.0.RELEASE'
     runtimeOnly 'com.h2database:h2'
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {

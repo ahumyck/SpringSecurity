@@ -37,7 +37,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 and().
                 csrf().disable().
                 sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).
-                and().
+                and()
+                //Настройка для входа в систему
+                .formLogin()
+                .loginPage("/login")
+                //Перенарпавление на главную страницу после успешного входа
+                .defaultSuccessUrl("/")
+                .permitAll()
+                .and().
                 authorizeRequests().
                 antMatchers("/hi").hasAnyAuthority(USER_ROLE_NAME, ADMIN_ROLE_NAME).
                 antMatchers("/secret").hasIpAddress("127.0.0.1/32").

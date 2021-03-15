@@ -8,13 +8,15 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import javax.annotation.PostConstruct;
 
 @SpringBootApplication
 @EnableJpaRepositories
-public class SecuringWebApplication {
+public class SecuringWebApplication extends SpringBootServletInitializer {
 
     @Autowired
     private RoleService roleService;
@@ -33,6 +35,10 @@ public class SecuringWebApplication {
     public static final String USER_ROLE_NAME = "USER";
     public static final String ADMIN_ROLE_NAME = "ADMIN";
 
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(SecuringWebApplication.class);
+    }
 
     @SneakyThrows
     public static void main(String[] args) {
@@ -47,6 +53,7 @@ public class SecuringWebApplication {
         String adminPassword = passwordGenerator.generatePasswordAndGetAsBase64(PASSWORD_LENGTH);
         passwordService.storePassword(PasswordService.ADMIN_PASS_KEY, adminPassword);
         userService.createAdmin("Admin", adminPassword);
+        userService.createUser("user", "user", USER_ROLE_NAME);
     }
 
 }

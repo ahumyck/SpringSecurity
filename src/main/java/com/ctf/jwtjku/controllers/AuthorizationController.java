@@ -7,6 +7,8 @@ import com.ctf.jwtjku.security.jwt.JsonWebToken;
 import com.ctf.jwtjku.security.jwt.JsonWebTokenService;
 import com.ctf.jwtjku.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@RestController
+@Controller
 public class AuthorizationController {
 
     @Autowired
@@ -36,7 +38,7 @@ public class AuthorizationController {
     }
 
 
-    @PostMapping(value = "/sign-in")
+    @PostMapping(value = "/login")
     public String singIn(HttpServletResponse response, @RequestBody UsernamePasswordRequestBody body) throws IOException {
         User user = userService.findByUsername(body.getUsername());
         if (user == null) {
@@ -45,7 +47,7 @@ public class AuthorizationController {
         }
         JsonWebToken jsonWebToken = jsonWebTokenService.generateToken(user.getUsername());
         response.addCookie(cookieService.createTokenCookie(jsonWebToken));
-        return "Authorization successful, check your cookie";
+        return "login";
     }
 
 
