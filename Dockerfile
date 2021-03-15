@@ -1,4 +1,4 @@
-FROM java:8
+FROM openjdk:11
 FROM gradle:6.8.3-jdk11 AS build
 ADD . /home
 WORKDIR /home
