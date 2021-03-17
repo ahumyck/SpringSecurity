@@ -1,5 +1,6 @@
 package com.ctf.jwtjku.config;
 
+import com.ctf.jwtjku.security.cookie.CookieService;
 import com.ctf.jwtjku.security.jwt.filters.JsonWebTokenFilter;
 import com.ctf.jwtjku.security.userdetails.CustomUserDetailService;
 import lombok.AllArgsConstructor;
@@ -47,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutSuccessUrl("/")
                 .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID", "token")
+                .deleteCookies("JSESSIONID", CookieService.COOKIE_NAME)
                 .permitAll()
                 .and().
                 authorizeRequests().

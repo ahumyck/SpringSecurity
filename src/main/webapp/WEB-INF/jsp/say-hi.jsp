@@ -19,6 +19,13 @@
       <span></span>
       ${message}
     </div>
+    <div class="submit-button">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <a href="/logout">Logout</a>
+    </div>
   </sec:authorize>
 </div>
 </body>

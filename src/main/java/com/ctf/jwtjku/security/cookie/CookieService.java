@@ -12,12 +12,12 @@ import java.util.Optional;
 @AllArgsConstructor
 public class CookieService {
 
-    private final String cookieName = "token";
+    public static final String COOKIE_NAME = "token";
 
     private final CookieEncryptionService cookieEncryptionService;
 
     public Cookie createTokenCookie(String token, int duration) {
-        Cookie cookie = new Cookie(cookieName, cookieEncryptionService.encrypt(token));
+        Cookie cookie = new Cookie(COOKIE_NAME, cookieEncryptionService.encrypt(token));
         cookie.setMaxAge(duration);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
@@ -36,7 +36,7 @@ public class CookieService {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (cookieName.equals(cookie.getName())) {
+                if (COOKIE_NAME.equals(cookie.getName())) {
                     String token = cookie.getValue();
                     if (token != null) return Optional.of(cookieEncryptionService.decrypt(token));
                 }

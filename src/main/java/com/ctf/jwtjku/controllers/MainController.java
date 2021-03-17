@@ -7,9 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class MainController {
-    // внедряем значение из application.properties
-    private String message = "Hello World";
-
 
     @GetMapping("/")
     public String welcome(Model model) {
