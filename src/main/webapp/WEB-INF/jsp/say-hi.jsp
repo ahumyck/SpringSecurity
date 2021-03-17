@@ -13,10 +13,6 @@
   <sec:authorize access="isAuthenticated()">
     <h2>Hello, ${pageContext.request.userPrincipal.name}</h2>
     <div class="submit-button">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
       ${message}
     </div>
     <div class="submit-button">

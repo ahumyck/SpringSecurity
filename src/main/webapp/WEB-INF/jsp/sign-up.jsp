@@ -48,16 +48,46 @@
 </div>
 <script type="text/javascript">
   var password = document.getElementById("password")
-  , confirm_password = document.getElementById("repassword");
-  function validatePassword(){
-    if(password.value != confirm_password.value) {
-      confirm_password.setCustomValidity("Passwords Don't Match");
-    } else {
-      confirm_password.setCustomValidity('');
-    }
-  }
-  password.oninput = validatePassword;
-  confirm_password.oninput = validatePassword;
+  var confirm_password = document.getElementById("repassword");
+
+  password.addEventListener("input", function (event) {
+
+     if(password.value != confirm_password.value) {
+           confirm_password.setCustomValidity("Passwords don't match");
+     } else {
+           confirm_password.setCustomValidity('');
+     }
+     if (password.validity.patternMismatch ) {
+           password.setCustomValidity("Password must contain at least 8 characters, including UPPER/lowercase and numbers");
+     } else {
+           password.setCustomValidity("");
+     }
+  }, false);
+
+  confirm_password.addEventListener("input", function (event) {
+     if(password.value != confirm_password.value) {
+                confirm_password.setCustomValidity("Passwords don't match");
+          } else {
+                confirm_password.setCustomValidity('');
+          }
+    }, false);
+
+    password.addEventListener("change", function (event) {
+         if (password.validity.patternMismatch ) {
+               password.setCustomValidity("Password must contain at least 8 characters, including UPPER/lowercase and numbers");
+         } else {
+               password.setCustomValidity("");
+         }
+      }, false);
+
+      confirm_password.addEventListener("change", function (event) {
+         if(password.value != confirm_password.value) {
+                    confirm_password.setCustomValidity("Passwords don't match");
+              } else {
+                    confirm_password.setCustomValidity('');
+              }
+        }, false);
+
   </script>
 </body>
 </html>
