@@ -10,23 +10,6 @@
 </head>
 <body>
 <div class="login-box">
-  <sec:authorize access="!isAuthenticated()">
-    <h2>Hello</h2>
-    <div class="submit-button">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-      <a href="/sign-in">Sign In</a>
-    </div>
-    <div class="submit-button">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <a href="/sign-up">Sign Up</a>
-    </div>
-  </sec:authorize>
   <sec:authorize access="isAuthenticated()">
     <h2>Hello, ${pageContext.request.userPrincipal.name}</h2>
     <div class="submit-button">
@@ -34,14 +17,7 @@
       <span></span>
       <span></span>
       <span></span>
-      <a href="/say-hi">Say Hi</a>
-    </div>
-    <div class="submit-button">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <a href="/logout">Logout</a>
+      ${message}
     </div>
   </sec:authorize>
 </div>

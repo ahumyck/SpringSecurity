@@ -43,6 +43,7 @@ body {
   outline: none;
   background: transparent;
 }
+
 .login-box .user-box label {
   position: absolute;
   top:0;
@@ -55,17 +56,23 @@ body {
 }
 
 .login-box .login-form .user-box .form-input:focus ~ label,
-.login-box .login-form .user-box .form-input:valid ~ label {
+.login-box .login-form .user-box .form-input:required:valid ~ label {
   top: -20px;
   left: 0;
   color: #03e9f4;
   font-size: 12px;
 }
 
+.login-box .login-form .user-box .form-input:invalid:not(:placeholder-shown) ~ label {
+  top: -20px;
+  left: 0;
+  color: red;
+  font-size: 12px;
+}
+
 .submit-button {
   position: relative;
   display: inline-block;
-  padding: 10px 20px;
   color: #03e9f4;
   font-size: 16px;
   text-decoration: none;
@@ -74,9 +81,9 @@ body {
   outline: none;
   transition: .5s;
   margin-top: 40px;
-  letter-spacing: 4px
 }
 
+.submit-button a,
 .submit-button input[type=submit]{
   position: relative;
   display: inline-block;
@@ -89,11 +96,13 @@ body {
   outline: 0;
   border: none;
   transition: .5s;
-  letter-spacing: 4px
+  letter-spacing: 4px;
+  padding: 10px 20px;
 }
 
-
- .submit-button:hover {
+.submit-button a:hover,
+.submit-button input[type=submit]:hover,
+.submit-button:hover {
   background: #03e9f4;
   color: #fff;
   border-radius: 5px;

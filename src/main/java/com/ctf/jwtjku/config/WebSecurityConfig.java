@@ -43,6 +43,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 //Перенарпавление на главную страницу после успешного входа
                 .defaultSuccessUrl("/")
+                .and()
+                .logout()
+                .logoutSuccessUrl("/")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID", "token")
                 .permitAll()
                 .and().
                 authorizeRequests().

@@ -16,13 +16,13 @@
 <body>
 <div class="login-box">
   <h2>Login</h2>
-  <form class="login-form" method="post" action="/sing-in">
+  <form class="login-form" method="post" action="/sign-in">
     <div class="user-box">
-      <input type="text" name="username" required="" class="form-input" id="username"/>
+      <input type="text" name="username" required class="form-input" id="username" placeholder=" "/>
       <label for="username">Username</label>
     </div>
     <div class="user-box">
-      <input type="password" name="password" required="" class="form-input" id="password">
+      <input type="password" name="password" required class="form-input" id="password" placeholder=" "/>
       <label>Password</label>
     </div>
     <div class="submit-button">
@@ -30,7 +30,7 @@
       <span></span>
       <span></span>
       <span></span>
-    <input type="submit" value="Submit"/>
+    <input type="submit" value="Sign In"/>
     </div>
   </form>
 </div>

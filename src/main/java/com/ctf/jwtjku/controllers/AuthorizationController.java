@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -29,31 +30,36 @@ public class AuthorizationController {
     private CookieService cookieService;
 
     @PostMapping(value = "/sign-up")
-    public String singUp(HttpServletResponse response, @RequestBody UsernamePasswordRequestBody body) throws IOException {
+    public String singUp(HttpServletResponse response, UsernamePasswordRequestBody body) throws IOException {
+        log.info("sign-up request with body:" + body);
         User user = userService.createUser(body);
         if (user == null) {
             response.sendError(400, "Cannot create user");
         }
-        return "Username " + body.getUsername() + " was signed-up";
+        return "redirect:/";
     }
 
 
-    @PostMapping(value = "/sing-in")
+    @PostMapping(value = "/sign-in")
     public String singIn(HttpServletResponse response, UsernamePasswordRequestBody body) throws IOException {
         User user = userService.findByUsername(body.getUsername());
         if (user == null) {
             log.info("Cannot find user with " + body.getUsername());
             response.sendError(400, "Cannot find user");
-            return "sing-in";
+            return "sign-in";
         }
         JsonWebToken jsonWebToken = jsonWebTokenService.generateToken(user.getUsername());
         response.addCookie(cookieService.createTokenCookie(jsonWebToken));
         return "redirect:/";
     }
 
-    @GetMapping("/sing-in")
-    public String login(){
-        return "sing-in";
+    @GetMapping("/sign-in")
+    public String login() {
+        return "sign-in";
     }
 
+    @GetMapping("/sign-up")
+    public String singUp() {
+        return "sign-up";
+    }
 }
