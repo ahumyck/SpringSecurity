@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,22 +31,23 @@ public class AuthorizationController {
     private CookieService cookieService;
 
     @PostMapping(value = "/sign-up")
-    public String singUp(HttpServletResponse response, UsernamePasswordRequestBody body) throws IOException {
+    public String singUp(HttpServletResponse response, UsernamePasswordRequestBody body, ModelMap model) throws IOException {
         log.info("sign-up request with body:" + body);
         User user = userService.createUser(body);
         if (user == null) {
-            response.sendError(400, "Cannot create user");
+            model.addAttribute("errorMessage", "<div class=\"error-message\">User with such name already exists</div>");
+            return "sign-up";
         }
         return "redirect:/";
     }
 
 
     @PostMapping(value = "/sign-in")
-    public String singIn(HttpServletResponse response, UsernamePasswordRequestBody body) throws IOException {
+    public String singIn(HttpServletResponse response, UsernamePasswordRequestBody body, ModelMap model) throws IOException {
         User user = userService.findByUsername(body.getUsername());
         if (user == null) {
             log.info("Cannot find user with " + body.getUsername());
-            response.sendError(400, "Cannot find user");
+            model.addAttribute("errorMessage", "<div class=\"error-message\">Wrong login or password</div>");
             return "sign-in";
         }
         JsonWebToken jsonWebToken = jsonWebTokenService.generateToken(user.getUsername());

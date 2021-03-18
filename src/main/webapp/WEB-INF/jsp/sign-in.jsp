@@ -16,6 +16,7 @@
 <body>
 <div class="login-box">
   <h2>Login</h2>
+  ${errorMessage}
   <form class="login-form" method="post" action="/sign-in">
     <div class="user-box">
       <input type="text" name="username" required class="form-input" id="username" placeholder=" "/>

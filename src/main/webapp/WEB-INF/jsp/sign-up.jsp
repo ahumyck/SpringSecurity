@@ -18,6 +18,7 @@
 <div class="login-box">
   <h2>Login</h2>
   <form class="login-form" method="POST" action="/sign-up">
+    ${errorMessage}
     <div class="user-box">
       <input type="text" name="username" required class="form-input" id="username"  placeholder=" "/>
       <label for="username">Username</label>
