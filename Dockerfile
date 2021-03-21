@@ -4,4 +4,4 @@ ADD . /home
 WORKDIR /home
 RUN gradle build
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/build/libs/securing-web-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "build/libs/securing-web-0.0.1-SNAPSHOT.jar"]
