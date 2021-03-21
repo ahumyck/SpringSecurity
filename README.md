@@ -18,18 +18,12 @@ ENTRYPOINT ["java", "-jar", "/build/libs/securing-web-0.0.1-SNAPSHOT.jar"]
 
 Then we build docker with the name "app-test":
 ```python
-sudo docker build -t app-test .
+sudo docker build -t web-service .
 ```
 
-If we want to launch this docker, then we can use following command:
+Launch docker:
 ```python
-sudo docker run -d -p 8080:8080 app-test
-```
-This command will launch docker in the background and "process hash" will be returned to the console
-
-Another way to launch docker:
-```python
-sudo docker run -p 8080:8080 app-test
+sudo docker run -p 8080:8080 web-service
 ```
 
 Default way to launch executable. This allows us to see our application,
