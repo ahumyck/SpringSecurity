@@ -1,4 +1,4 @@
-# Spring Security Library
+# Json Web Token Vulnerability
 
 1) Build executable .jar file
 2) Create a file with name "Dockerfile" and put it to the same folder
