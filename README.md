@@ -12,6 +12,6 @@ sudo docker build -t web-service .
 sudo docker run -p 8080:8080 web-service
 ```
 
-4)Try to get your secret on http://localhost:8080
+4) Try to get your secret on http://localhost:8080
 
 
