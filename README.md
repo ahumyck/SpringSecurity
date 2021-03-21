@@ -35,6 +35,6 @@ sudo docker run -p 8080:8080 app-test
 Default way to launch executable. This allows us to see our application,
 but console will be blocked.
 
-Try to get your secret on http://localhost:8085/secret
+Try to get your secret on http://localhost:8080
 
 
