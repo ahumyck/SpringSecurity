@@ -11,7 +11,8 @@ public class RoleService {
 
     public boolean createRole(String roleName) {
         if (roleRepository.findByRoleName(roleName) == null) {
-            return roleRepository.save(new Role(roleName)) != null;
+            roleRepository.save(new Role(roleName));
+            return true;
         }
         return false;
     }

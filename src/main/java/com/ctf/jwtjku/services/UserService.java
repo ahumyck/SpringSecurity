@@ -6,7 +6,9 @@ import com.ctf.jwtjku.model.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static com.ctf.jwtjku.SecuringWebApplication.ADMIN_ROLE_NAME;
+import javax.naming.AuthenticationException;
+import java.util.Optional;
+
 import static com.ctf.jwtjku.SecuringWebApplication.USER_ROLE_NAME;
 
 @AllArgsConstructor
@@ -16,36 +18,35 @@ public class UserService {
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
 
-    public User createAdmin(UsernamePasswordRequestBody body) {
-        return createUser(body, ADMIN_ROLE_NAME);
-    }
-
-    public User createAdmin(String adminName, String adminPassword) {
-        return createUser(adminName, adminPassword, ADMIN_ROLE_NAME);
-    }
-
-    public User createUser(UsernamePasswordRequestBody body) {
+    public Optional<User> createUser(UsernamePasswordRequestBody body) {
         return createUser(body, USER_ROLE_NAME);
     }
 
-    public User createUser(UsernamePasswordRequestBody body, String role) {
+    public Optional<User> createUser(UsernamePasswordRequestBody body, String role) {
         String username = body.getUsername();
         String password = body.getPassword();
         return createUser(username, password, role);
     }
 
-    public User createUser(String username, String password, String role) {
+    public Optional<User> createUser(String username, String password, String role) {
         if (userRepository.findByUsername(username) == null) {
             User user = new User();
             user.setUsername(username);
             user.setPassword(passwordEncoder.encode(password));
             user.setRole(roleService.findRole(role));
-            return userRepository.save(user);
+            return Optional.of(userRepository.save(user));
         }
-        return null;
+        return Optional.empty();
     }
 
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public Optional<User> checkUser(UsernamePasswordRequestBody body) throws AuthenticationException {
+        User user = userRepository.findByUsername(body.getUsername());
+        if (user != null) {
+            String encodedPassword = passwordEncoder.encode(body.getPassword());
+            if (user.getPassword().equals(encodedPassword)) {
+                return Optional.of(user);
+            }
+        }
+        return Optional.empty();
     }
 }

@@ -28,10 +28,6 @@ public class CookieService {
         return createTokenCookie(jsonWebToken.getValue(), jsonWebToken.getDuration());
     }
 
-    public Cookie deleteCookie(String token) {
-        return createTokenCookie(token, 0);
-    }
-
     public Optional<String> getCookieFromRequest(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {

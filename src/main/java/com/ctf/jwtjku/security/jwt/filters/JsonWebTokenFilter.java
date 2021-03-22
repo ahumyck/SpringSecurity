@@ -31,13 +31,12 @@ public class JsonWebTokenFilter extends OncePerRequestFilter {
         Optional<String> token = cookieService.getCookieFromRequest(request);
         token.ifPresent(javaWebToken -> {
             try {
-                log.info("token: " + javaWebToken);
                 String username = jsonWebTokenService.validateTokenAndGetUsername(javaWebToken);
                 UserDetails userDetails = customUserDetailService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken userAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(userAuthenticationToken);
             } catch (Exception e) {
-                log.error("exception", e);
+                //log.error(e.getMessage()); may produce many too much output
             }
 
         });

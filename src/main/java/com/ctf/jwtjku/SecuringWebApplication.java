@@ -27,10 +27,7 @@ public class SecuringWebApplication extends SpringBootServletInitializer {
     @Autowired
     private SecureRandomPasswordGenerator passwordGenerator;
 
-    @Autowired
-    private PasswordService passwordService;
-
-    private static final int PASSWORD_LENGTH = 256;
+     private static final int PASSWORD_LENGTH = 1024;
 
     public static final String USER_ROLE_NAME = "USER";
     public static final String ADMIN_ROLE_NAME = "ADMIN";
@@ -51,9 +48,7 @@ public class SecuringWebApplication extends SpringBootServletInitializer {
         roleService.createRole(USER_ROLE_NAME);
         roleService.createRole(ADMIN_ROLE_NAME);
         String adminPassword = passwordGenerator.generatePasswordAndGetAsBase64(PASSWORD_LENGTH);
-        passwordService.storePassword(PasswordService.ADMIN_PASS_KEY, adminPassword);
-        userService.createAdmin("Admin", adminPassword);
-        userService.createUser("user", "user", USER_ROLE_NAME);
+        userService.createUser("Admin", adminPassword, ADMIN_ROLE_NAME);
     }
 
 }
